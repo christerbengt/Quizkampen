@@ -17,46 +17,48 @@ public class GUI extends JFrame implements ActionListener {
 
     JButton colorChooserButton;
 
-    JButton CategoryButton1;
-    JButton CategoryButton2;
-    JButton CategoryButton3;
+    JButton CategoryButton1 = new JButton("Answer 1");;
+    JButton CategoryButton2 = new JButton("Answer 1");
+    JButton CategoryButton3 = new JButton("Answer 1");
 
-    JButton AnswerButton1;
-    JButton AnswerButton2;
-    JButton AnswerButton3;
-    JButton AnswerButton4;
+    JButton AnswerButton1 = new JButton("Answer 1");
+    JButton AnswerButton2 = new JButton("Answer 1");
+    JButton AnswerButton3 = new JButton("Answer 1");
+    JButton AnswerButton4 = new JButton("Answer 1");
+
     ArrayList<JButton> answerButtons;
     ArrayList<JButton> categoryButtons;
 
     public GUI() {
-        answerButtons = new ArrayList<>(AnswerButton1, AnswerButton2, AnswerButton3, AnswerButton4);
-        categoryButtons = new ArrayList<>();
+        answerButtons = new ArrayList<>();
+        answerButtons.add(AnswerButton1);
+        answerButtons.add(AnswerButton2);
+        answerButtons.add(AnswerButton3);
+        answerButtons.add(AnswerButton4);
 
-        for (int i = 1; i <= 3; i++) {
-            JButton button = new JButton(String.valueOf(i));
-            categoryButtons.add(button);
+        categoryButtons = new ArrayList<>();
+        categoryButtons.add(CategoryButton1);
+        categoryButtons.add(CategoryButton2);
+        categoryButtons.add(CategoryButton3);
+
+        for (JButton button : answerButtons) {
+            button.addActionListener(this);
+            p2.add(button);
+        }
+        for (JButton button : categoryButtons) {
+            button.addActionListener(this);
             p3.add(button);
         }
 
-        for (int i = 1; i <= 4; i++) {
-            JButton button = new JButton(String.valueOf(i));
-            answerButtons.add(button);
-            p2.add(button);
-        }
-
         this.add(p1);
+        p1.setLayout(new BorderLayout());
         p1.add(p2, BorderLayout.CENTER);
         p1.add(p3, BorderLayout.NORTH);
-        p1.setLayout(new BorderLayout());
+
         p2.setLayout(new GridLayout(2, 2));
-        p3.setLayout(new GridLayout(1,3));
+        p3.setLayout(new GridLayout(3,1));
 
         startGameButton = new JButton("Start Game");
-
-        AnswerButton1 = new JButton("Answer 1");
-        AnswerButton2 = new JButton("Answer 2");
-        AnswerButton3 = new JButton("Answer 3");
-        AnswerButton4 = new JButton("Answer 4");
 
         JColorChooser colorChooser = new JColorChooser();
 
