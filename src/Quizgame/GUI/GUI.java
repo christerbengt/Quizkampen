@@ -8,14 +8,12 @@ import java.util.ArrayList;
 
 public class GUI extends JFrame implements ActionListener {
 
-    Panel p1 = new Panel();
-    Panel p2 = new Panel();
-    Panel p3 = new Panel();
+    Panel mainPanel = new Panel();
+    Panel answerPanel = new Panel();
+    Panel categoryPanel = new Panel();
     Panel p4 = new Panel();
 
     JButton startGameButton;
-
-    JButton colorChooserButton;
 
     JButton CategoryButton1 = new JButton("Answer 1");;
     JButton CategoryButton2 = new JButton("Answer 1");
@@ -43,24 +41,24 @@ public class GUI extends JFrame implements ActionListener {
 
         for (JButton button : answerButtons) {
             button.addActionListener(this);
-            p2.add(button);
+            answerPanel.add(button);
         }
         for (JButton button : categoryButtons) {
             button.addActionListener(this);
-            p3.add(button);
+            categoryPanel.add(button);
         }
 
-        this.add(p1);
-        p1.setLayout(new BorderLayout());
-        p1.add(p2, BorderLayout.CENTER);
-        p1.add(p3, BorderLayout.NORTH);
+        this.add(mainPanel);
+        p4.setLayout(new GridBagLayout());
+        p4.add(answerPanel);
+        mainPanel.setLayout(new BorderLayout(20,20));
+        mainPanel.add(p4, BorderLayout.CENTER);
+        mainPanel.add(categoryPanel, BorderLayout.NORTH);
 
-        p2.setLayout(new GridLayout(2, 2));
-        p3.setLayout(new GridLayout(3,1));
+        answerPanel.setLayout(new GridLayout(2,2,20,20));
+        categoryPanel.setLayout(new GridLayout(3,1,0,20));
 
         startGameButton = new JButton("Start Game");
-
-        JColorChooser colorChooser = new JColorChooser();
 
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
