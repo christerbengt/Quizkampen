@@ -15,14 +15,9 @@ public class QuestionDatabase {
         return new ArrayList<>();
     }
 
-    /////////////////////////////////////////////////////////////////////
-    //
-    //  Function that returns a list of questions at a given topic based on input string.
-    //
-    /////////////////////////////////////////////////////////////////////
     public List<Question> getQuestionsByCategory(String category) {
-        return questions.stream()
-                .filter(e -> e.getCategory().contains(category))
+        return questions.stream().
+                filter(e -> e.getCategory().contains(category))
                 .map(e -> new Question(e.getQuestion(), e.getCategory(), e.getAnswerOption1(), e.getAnswerOption2(), e.getAnswerOption3(), e.getAnswerOption4(), e.getCorrectAnswer()))
                 .collect(Collectors.toList());
     }
