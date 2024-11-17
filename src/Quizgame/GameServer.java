@@ -6,16 +6,25 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class GameServer {
+    private final String ipAddress;
+    private final int port;
+    private final boolean useLocalHost;
     private final ServerSocket serverSocket;
     private final ExecutorService clientHandlers;
     private final Map<String, ClientHandler> connectedClients;
     private volatile boolean running;
 
+
+    // Constructor for localhost with specific port
+     // @param port Port number to listen on
+     // @throws IOException If server socket creation fails
     public GameServer(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+        this.ipAddress = "127.0.0.1";
+        this.port = port;
+        this.useLocalHost = true;
+        this.serverSocket = new ServerSocket(port, 50, InetAddress.getByName(ipAddress));
         this.clientHandlers = Executors.newCachedThreadPool();
         this.connectedClients = new ConcurrentHashMap<>();
-        this.running = false;
     }
 
     /**
