@@ -1,7 +1,6 @@
 package Quizgame.Clientside;
 
 import Quizgame.GUI.QuizCampenGUI;
-import Quizgame.GameServer;
 import Quizgame.GameProtocol.Message;
 
 import java.io.IOException;
@@ -32,6 +31,8 @@ public class GameClient {
         this.messageHandler = Executors.newSingleThreadExecutor();
         this.connected = false;
     }
+
+
 
     // Establishes connection with the game server
     public boolean connect() {
@@ -126,5 +127,26 @@ public class GameClient {
     // Returns the client ID given by server
     public String getClientId() {
         return clientId;
+    }
+    public static void main(String[] args) {
+        QuizCampenGUI gui = new QuizCampenGUI();
+        GameClient client = new GameClient("localhost", 66666, gui);
+        if (client.connect()) {
+            gui.setVisible(true);
+        } else {
+            System.err.println("Could not connect to server");
+            System.exit(1);
+        }
+        String serverAddress = "localhost";
+        int serverPort = 66666;
+
+        if (args.length > 0) {
+            serverAddress = args[0];
+            if (args.length > 1) {
+                serverPort = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid port number. Using default port: " + serverPort);
+            }
+        }
     }
 }
