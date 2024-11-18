@@ -81,12 +81,12 @@ public class GameClient {
             case "WELCOME":
                 // Store client ID assigned by server
                 clientId = message.getContent();
-                gui.updateStatus("Connected as client: " + clientId);
+                //  gui.updateStatus("Connected as client: " + clientId);
                 break;
 
             case "ECHO":
                 // Handle echo message from server
-                gui.updateStatus("Server echo: " + message.getContent());
+                //   gui.updateStatus("Server echo: " + message.getContent());
                 break;
 
             default:
@@ -116,7 +116,7 @@ public class GameClient {
             if (in != null) in.close();
             if (serverConnection != null) serverConnection.close();
             messageHandler.shutdown();
-            gui.updateStatus("Disconnected from server");
+            // gui.updateStatus("Disconnected from server");
         } catch (IOException e) {
             System.err.println("Error disconnecting from server: " + e.getMessage());
         }
@@ -164,3 +164,4 @@ public class GameClient {
         }
     }
 }
+
