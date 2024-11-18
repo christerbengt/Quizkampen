@@ -33,7 +33,6 @@ public class GameClient {
     }
 
 
-
     // Establishes connection with the game server
     public boolean connect() {
         try {
@@ -66,7 +65,7 @@ public class GameClient {
             while (connected && !serverConnection.isClosed()) {
                 Object message = in.readObject();
                 if (message instanceof Message) {
-                    processServerMessage ((Message) message);
+                    processServerMessage((Message) message);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -75,6 +74,7 @@ public class GameClient {
             }
         }
     }
+
     // Process messages received from server
     private void processServerMessage(Message message) {
         switch (message.getType()) {
@@ -107,6 +107,7 @@ public class GameClient {
             }
         }
     }
+
     // Disconnects from server
     public void disconnect() {
         connected = false;
@@ -120,33 +121,46 @@ public class GameClient {
             System.err.println("Error disconnecting from server: " + e.getMessage());
         }
     }
+
     // Returns connection status
     public boolean isConnected() {
         return connected;
     }
+
     // Returns the client ID given by server
     public String getClientId() {
         return clientId;
     }
-    public static void main(String[] args) {
-        QuizCampenGUI gui = new QuizCampenGUI();
-        GameClient client = new GameClient("localhost", 66666, gui);
-        if (client.connect()) {
-            gui.setVisible(true);
-        } else {
-            System.err.println("Could not connect to server");
-            System.exit(1);
-        }
-        String serverAddress = "localhost";
-        int serverPort = 66666;
 
-        if (args.length > 0) {
-            serverAddress = args[0];
-            if (args.length > 1) {
-                serverPort = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid port number. Using default port: " + serverPort);
+    public static void main(String[] args) {
+        try {
+            String serverAddress = "localhost";
+            int serverPort = 66666;
+
+            // Parse command-line arguments
+            if (args.length > 0) {
+                serverAddress = args[0];
+                if (args.length > 1) {
+                    try {
+                        serverPort = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid port number. Using default port: " + serverPort);
+                    }
+                }
             }
+
+            QuizCampenGUI gui = new QuizCampenGUI();
+            GameClient client = new GameClient(serverAddress, serverPort, gui);
+
+            if (client.connect()) {
+                gui.setVisible(true);
+            } else {
+                System.err.println("Could not connect to server");
+                System.exit(1);
+            }
+        } catch (Exception e) {
+            System.err.println("Error initializing client: " + e.getMessage());
+            System.exit(1);
         }
     }
 }
