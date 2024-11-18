@@ -1,10 +1,9 @@
 package Quizgame.game_classes;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-  private String id;
-  private String name;
+  private final String id;
+  private final String name;
   private List<GameSession> currentGames;
 
   public Player(String id, String name, List<GameSession> currentGames) {
