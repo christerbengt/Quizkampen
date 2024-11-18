@@ -1,4 +1,4 @@
-package Quizgame.Clientside;
+package Quizgame;
 
 import Quizgame.GUI.QuizCampenGUI;
 import Quizgame.GameProtocol.Message;

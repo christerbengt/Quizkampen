@@ -1,4 +1,4 @@
-package Quizgame;
+package server_database;
 
 public class Question {
     private final String question;
