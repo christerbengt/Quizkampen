@@ -1,8 +1,8 @@
-package Quizgame;
+package Quizgame.Clientside;
 
 import Quizgame.GUI.QuizCampenGUI;
+import Quizgame.GameServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

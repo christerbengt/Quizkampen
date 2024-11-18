@@ -1,4 +1,4 @@
-package Quizgame;
+package Quizgame.Clientside;
 
 public class CategoryPanel {
 }
