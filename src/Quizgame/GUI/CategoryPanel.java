@@ -50,7 +50,7 @@ like russian dolls. Could not figure out a way around this.
         mainPanel.add(centerPanel1, BorderLayout.CENTER);
 
         for (JButton button : answerButtons) {
-            button.addActionListener(e -> new QuizCampenGUI.NextPanelAction()); //dessa måste göra något, just nu går dom bara vidare
+            button.addActionListener(new QuizCampenGUI.NextPanelAction()); //dessa måste göra något, just nu går dom bara vidare
             answerPanel.add(button);
         }
 

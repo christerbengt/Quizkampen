@@ -2,9 +2,11 @@ package Quizgame.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class QuestionPanel {
+public class QuestionPanel extends JFrame implements ActionListener {
 
     static JPanel createQuestionPanel(String questionText, String answerText1, String answerText2, String answerText3, String answerText4) {
         JButton AnswerButton1 = new JButton(answerText1);
@@ -46,5 +48,10 @@ public class QuestionPanel {
         mainPanel.add(centerPanel2, BorderLayout.NORTH);
 
         return mainPanel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
