@@ -94,16 +94,18 @@ like russian dolls. Could not figure out a way around this.
 
         mainPanel.setLayout(new BorderLayout());
 
-        //create answer panel and add buttons
-        answerPanel.setLayout(new GridLayout(3,1,20,20));
-        centerPanel1.setLayout(new GridBagLayout());
-        centerPanel1.add(answerPanel);
-        mainPanel.add(centerPanel1, BorderLayout.CENTER);
-
         answerButtons = new ArrayList<>();
         answerButtons.add(categoryButton1);
         answerButtons.add(categoryButton2);
         answerButtons.add(categoryButton3);
+
+        int sizeOfCategoryButtons = answerButtons.size();
+
+        //create answer panel and add buttons
+        answerPanel.setLayout(new GridLayout(sizeOfCategoryButtons,1,20,20));
+        centerPanel1.setLayout(new GridBagLayout());
+        centerPanel1.add(answerPanel);
+        mainPanel.add(centerPanel1, BorderLayout.CENTER);
 
         for (JButton button : answerButtons) {
             button.addActionListener(new NextPanelAction());//dessa måste göra något, just nu går dom bara vidare
