@@ -2,10 +2,12 @@ package Quizgame.Clientside;
 
 import Quizgame.GUI.QuizCampenGUI;
 import Quizgame.GameServer;
+import Quizgame.GameProtocol.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,7 +37,7 @@ public class GameClient {
     public boolean connect() {
         try {
             // Create socket connection
-            serverConnection = new Socket(serverAddress, serverPort);
+            serverConnection = new Socket(InetAddress.getLocalHost(), 66666);
 
             // Create streams - order is important to prevent deadlock
             out = new ObjectOutputStream(serverConnection.getOutputStream());
@@ -62,8 +64,8 @@ public class GameClient {
         try {
             while (connected && !serverConnection.isClosed()) {
                 Object message = in.readObject();
-                if (message instanceof GameServer.Message) {
-                    processServerMessage ((GameServer.Message) message);
+                if (message instanceof Message) {
+                    processServerMessage ((Message) message);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -73,9 +75,9 @@ public class GameClient {
         }
     }
     // Process messages received from server
-    private void processServerMessage(GameServer.Message message) {
+    private void processServerMessage(Message message) {
         switch (message.getType()) {
-            case "Welcome":
+            case "WELCOME":
                 // Store client ID assigned by server
                 clientId = message.getContent();
                 gui.updateStatus("Connected as client: " + clientId);
@@ -95,7 +97,7 @@ public class GameClient {
     public void sendToServer(String type, String content) {
         if (connected) {
             try {
-                GameServer.Message message = new GameServer.Message(type, content);
+                Message message = new Message(type, content);
                 out.writeObject(message);
                 out.flush();
             } catch (IOException e) {

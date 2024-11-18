@@ -13,7 +13,7 @@ public class GameServer {
     private volatile boolean running;
 
     public GameServer(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+        this.serverSocket = new ServerSocket(66666);
         this.clientHandlers = Executors.newCachedThreadPool();
         this.connectedClients = new ConcurrentHashMap<>();
         this.protocol = new GameProtocol();
