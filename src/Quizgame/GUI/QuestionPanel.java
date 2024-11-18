@@ -1,4 +1,4 @@
-package Quizgame;
+package Quizgame.GUI;
 
 public class QuestionPanel {
 }
