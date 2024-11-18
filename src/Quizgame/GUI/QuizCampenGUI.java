@@ -14,7 +14,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     ArrayList<JButton> categoryButtons;
 
     public QuizCampenGUI() {
-        setTitle("Distinct Panels Example");
+        setTitle("Quiz Campen");
         setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -40,7 +40,6 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    //INTE KLAR
     private JPanel createWelcomePanel() {
         JPanel mainPanel = new JPanel();
         JPanel centerPanel1 = new JPanel();
