@@ -115,4 +115,21 @@ public class GameServer {
             }
         }
     }
+
+    public static void main(String[] args) {
+        int port = 12345; // You can change this default port
+
+        try {
+            GameServer server = new GameServer(port);
+            // Add shutdown hook to handle ctrl+c gracefully
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("\nShutting down server...");
+                server.stop();
+            }));
+
+            server.start();
+        } catch (IOException e) {
+            System.err.println("Failed to start server: " + e.getMessage());
+        }
+    }
 }
