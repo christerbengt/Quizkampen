@@ -1,5 +1,4 @@
 package Quizgame.client.GUI;
-import Quizgame.GameClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +11,6 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     private static JPanel mainPanel;
 
     ArrayList<JButton> answerButtons;
-
-    GameClient gameClient = new GameClient("localhost", 66666, this);
 
     public QuizCampenGUI() {
         setTitle("Quiz Campen");
