@@ -23,5 +23,15 @@ public class Player {
   public List<GameSession> getGameSessions(){
     return currentGames;
   }
+
+  public int getScore() {
+    int totalScore = 0;
+    for (GameSession gameSession : currentGames) {
+      totalScore += gameSession.getScore(this);
+    }
+    return totalScore;
+  }
+
 }
+
 
