@@ -1,6 +1,6 @@
 package Quizgame;
 
-import Quizgame.GUI.QuizCampenGUI;
+import Quizgame.client.GUI.QuizCampenGUI;
 import Quizgame.GameProtocol.Message;
 
 import java.io.IOException;
