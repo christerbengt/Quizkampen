@@ -1,4 +1,4 @@
-package Quizgame.GUI;
+package Quizgame.client.GUI;
 
 import javax.swing.*;
 

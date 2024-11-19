@@ -1,4 +1,4 @@
-package Quizgame.server_database;
+package Quizgame.server.database;
 
 import java.util.ArrayList;
 import java.util.List;

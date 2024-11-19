@@ -1,4 +1,4 @@
-package Quizgame.game_classes;
+package Quizgame;
 
 public class ScoreboardPanel {
 }
