@@ -17,24 +17,23 @@ public class Round {
 
   }
 
-  // public void submitAnswer(Player player, Answer answer) {
-  // }
-
   public Object getPlayer() {
     return null;
   }
 
+  // public void submitAnswer(Player player, Answer answer) {
+  // }
 
-  public int getScore() {
-    return 0;
-  }
+
+  // public int getRoundScore(Player player) {
+  //  return 0;
+  // }
 
   public boolean isComplete() {
     return isComplete;
   }
 
-  //private boolean isCorrect(Answer answer) {
-  //}
+
 
 
 
