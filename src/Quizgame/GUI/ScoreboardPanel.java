@@ -1,6 +1,7 @@
 package Quizgame.GUI;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 
@@ -24,27 +25,27 @@ public class ScoreboardPanel extends JPanel {
 
     private static JPanel createScorePanel(String playerName, int[] scores) {
         JPanel panel = new JPanel();
-        JPanel bagPanel = new JPanel();
-        bagPanel.setLayout(new GridBagLayout());
         panel.setLayout(new GridLayout(4, 1)); // 2 category scores, 1 total score, 1 name
-        bagPanel.add(panel);
 
         // Username Label
         JLabel nameLabel = new JLabel(playerName, SwingConstants.CENTER);
+        nameLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
         panel.add(nameLabel);
 
         // Category Scores
         for (int score : scores) {
             JLabel scoreLabel = new JLabel("Category Score: " + score, SwingConstants.CENTER);
+            scoreLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
             panel.add(scoreLabel);
         }
 
         // Total Score
         int totalScore = calculateTotalScore(scores);
         JLabel totalScoreLabel = new JLabel("Total Score: " + totalScore, SwingConstants.CENTER);
+        totalScoreLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
         panel.add(totalScoreLabel);
 
-        return bagPanel;
+        return panel;
     }
 
     private static int calculateTotalScore(int[] scores) {
