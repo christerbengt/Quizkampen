@@ -5,8 +5,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class WelcomePanel extends JFrame implements ActionListener {
-    static JPanel createWelcomePanel() {
+public class WelcomePanel extends JPanel implements ActionListener {
+    private QuizCampenGUI parent;
+
+    public WelcomePanel(QuizCampenGUI parent) {
+        this.parent = parent;
+        setLayout(new BorderLayout());
+
+        JPanel mainPanel = createWelcomePanel();
+
+        add(mainPanel, BorderLayout.CENTER);
+    }
+
+    private JPanel createWelcomePanel() {
         JPanel mainPanel = new JPanel();
         JPanel centerPanel1 = new JPanel();
         JPanel centerPanel2 = new JPanel();
@@ -25,7 +36,7 @@ public class WelcomePanel extends JFrame implements ActionListener {
         JButton startButton = new JButton("START");
         startPanel.setLayout(new FlowLayout(100, 100, 100));
         startPanel.add(startButton);
-        startButton.addActionListener(new QuizCampenGUI.NextPanelAction());
+        startButton.addActionListener(this);
         centerPanel1.setLayout(new GridBagLayout());
         centerPanel1.add(startPanel);
         mainPanel.add(centerPanel1, BorderLayout.CENTER);
@@ -35,6 +46,7 @@ public class WelcomePanel extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        parent.showNextPanel();
 
     }
 }
