@@ -9,7 +9,7 @@ public class Question {
     private final String answerOption4;
     private final String correctAnswer;
 
-    public Question(String question, String category, String answerOption1, String answerOption2, String answerOption3, String answerOption4, String correctAnswer) {
+    public Question(String question, String answerOption1, String answerOption2, String answerOption3, String answerOption4, String correctAnswer, String category) {
         this.question = question;
         this.category = category;
         this.answerOption1 = answerOption1;
