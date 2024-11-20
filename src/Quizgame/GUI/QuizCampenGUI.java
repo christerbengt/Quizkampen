@@ -10,9 +10,6 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
 
-    // Example player scores
-
-
     public QuizCampenGUI() {
         setTitle("Quiz Campen");
         setSize(400, 400);
@@ -23,15 +20,17 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
 
         int[] player1Scores = {10, 15}; // Example scores for player 1
         int[] player2Scores = {12, 14}; // Example scores for player 2
-        ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
-        QuestionPanel questionPanel = new QuestionPanel("Question 1: What is 2 + 2?", "5", "3", "2", "4", "4");
 
+        WelcomePanel welcomePanel = new WelcomePanel(this);
+        CategoryPanel categoryPanel = new CategoryPanel(this,"category 1", "category 2", "category 3");
+        QuestionPanel questionPanel = new QuestionPanel(this,"Question 1: What is 2 + 2?", "5", "3", "2", "4", "4");
+        ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
 
         // Create four distinct panels
         // Like constructors, we need to create a method to read, categorys, questions and answers from files
         // These can then be used to create the panels insted of the strings
-        JPanel panel1 = WelcomePanel.createWelcomePanel();
-        JPanel panel2 = CategoryPanel.createCategoryPanel("category 1", "category 2", "category 3");
+        JPanel panel1 = welcomePanel;
+        JPanel panel2 = categoryPanel;
         JPanel panel3 = questionPanel;
         JPanel panel4 = scoreboardPanel;
 
@@ -51,11 +50,8 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
 
     }
 
-    protected static class NextPanelAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            cardLayout.next(mainPanel); // Show the next panel
-        }
+    public void showNextPanel() {
+        cardLayout.next(mainPanel); // Show the next panel
     }
 
     public static void main(String[] args) {

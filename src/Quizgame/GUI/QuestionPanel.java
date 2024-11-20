@@ -9,20 +9,29 @@ import java.util.Collections;
 
 public class QuestionPanel extends JPanel implements ActionListener {
 
+    private String correctAnswer;
+    private QuizCampenGUI parent;
 
-    public QuestionPanel(String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer) {
+    public QuestionPanel(QuizCampenGUI parent, String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+        this.parent = parent;
         setLayout(new BorderLayout());
 
-        JPanel mainPanel = createQuestionPanel(questionText, answerText1, answerText2, answerText3, answerText4, correctAnswer);
+        JPanel mainPanel = createQuestionPanel(questionText, answerText1, answerText2, answerText3, answerText4);
 
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createQuestionPanel(String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer) {
+    private JPanel createQuestionPanel(String questionText, String answerText1, String answerText2, String answerText3, String answerText4) {
         JButton AnswerButton1 = new JButton(answerText1);
         JButton AnswerButton2 = new JButton(answerText2);
         JButton AnswerButton3 = new JButton(answerText3);
         JButton AnswerButton4 = new JButton(answerText4);
+
+        AnswerButton1.setActionCommand(answerText1);
+        AnswerButton2.setActionCommand(answerText2);
+        AnswerButton3.setActionCommand(answerText3);
+        AnswerButton4.setActionCommand(answerText4);
 
         JPanel mainPanel = new JPanel();
         JPanel centerPanel1 = new JPanel();
@@ -61,30 +70,29 @@ public class QuestionPanel extends JPanel implements ActionListener {
         return mainPanel;
     }
 
-    private boolean checkAnswer(String answer, String correctAnswer) {
-        if (answer.equals(correctAnswer)) {
-            return true;
-        }
-        return false;
+    private boolean checkAnswer(String answer) {
+        return answer.equals(correctAnswer);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        String answer = button.getText();
-        String correctAnswer = button.getName();
-        if (checkAnswer(answer, correctAnswer)) {
+        String answer = button.getActionCommand(); // Get the button command text
+
+        // Change button background based on whether the answer is correct
+        if (checkAnswer(answer)) {
             button.setBackground(Color.GREEN);
         } else {
             button.setBackground(Color.RED);
         }
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        }
 
-        new QuizCampenGUI.NextPanelAction();
+        // Pause and then proceed to the next action
+        try {
+            Thread.sleep(5000); // This should be enough time to show the button's color
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        parent.showNextPanel();
 
     }
 }

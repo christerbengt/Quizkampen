@@ -6,7 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CategoryPanel extends JFrame implements ActionListener {
+public class CategoryPanel extends JPanel implements ActionListener {
+    private QuizCampenGUI parent;
+
+    public CategoryPanel(QuizCampenGUI parent,String category1, String category2, String category3) {
+        this.parent = parent;
+        setLayout(new BorderLayout());
+
+        JPanel mainPanel = createCategoryPanel(category1,category2,category3);
+
+        add(mainPanel, BorderLayout.CENTER);
+    }
 
     /*
 Discalaimer,
@@ -20,7 +30,7 @@ like russian dolls. Could not figure out a way around this.
 
  */
 
-    static JPanel createCategoryPanel(String category1, String category2, String category3) {
+    private JPanel createCategoryPanel(String category1, String category2, String category3) {
         //create buttons
         JButton categoryButton1 = new JButton(category1);
         JButton categoryButton2 = new JButton(category2);
@@ -50,7 +60,7 @@ like russian dolls. Could not figure out a way around this.
         mainPanel.add(centerPanel1, BorderLayout.CENTER);
 
         for (JButton button : answerButtons) {
-            button.addActionListener(new QuizCampenGUI.NextPanelAction()); //dessa måste göra något, just nu går dom bara vidare
+            button.addActionListener(this); //dessa måste göra något, just nu går dom bara vidare
             answerPanel.add(button);
         }
 
@@ -68,6 +78,6 @@ like russian dolls. Could not figure out a way around this.
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        parent.showNextPanel();
     }
 }
