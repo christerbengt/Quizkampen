@@ -1,6 +1,6 @@
 package Quizgame.game_classes;
 
-import Quizgame.server_database.Question;
+import Quizgame.server.database.Question;
 
 import java.util.List;
 import java.util.Random;
