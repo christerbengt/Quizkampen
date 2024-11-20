@@ -77,22 +77,23 @@ public class QuestionPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        String answer = button.getActionCommand(); // Get the button command text
+        String answer = button.getActionCommand();
 
-        // Change button background based on whether the answer is correct
+        // Check the answer and set the button color
         if (checkAnswer(answer)) {
             button.setBackground(Color.GREEN);
         } else {
             button.setBackground(Color.RED);
         }
 
-        // Pause and then proceed to the next action
-        try {
-            Thread.sleep(5000); // This should be enough time to show the button's color
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-        parent.showNextPanel();
-
+        // Set a timer to wait before proceeding to the next panel
+        Timer timer = new Timer(1000, evt -> {
+            // After a delay, transition to the next panel
+            parent.showNextPanel();
+            // Reset the background to default (for other uses)
+            button.setBackground(null);
+        });
+        timer.setRepeats(false); // Make sure the timer only runs once
+        timer.start();
     }
 }
