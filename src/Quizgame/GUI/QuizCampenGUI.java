@@ -10,7 +10,10 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
 
-    ArrayList<JButton> answerButtons;
+    // Example player scores
+    int[] player1Scores = {10, 15}; // Example scores for player 1
+    int[] player2Scores = {12, 14}; // Example scores for player 2
+    ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
 
     public QuizCampenGUI() {
         setTitle("Quiz Campen");
@@ -26,7 +29,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
         JPanel panel1 = WelcomePanel.createWelcomePanel();
         JPanel panel2 = CategoryPanel.createCategoryPanel("category 1", "category 2", "category 3");
         JPanel panel3 = QuestionPanel.createQuestionPanel("Question 1: What is 2 + 2?", "Answer 1", "Answer 2", "Answer 3", "Answer 4");
-        JPanel panel4 = ScoreboardPanel.createScorePanel();
+        JPanel panel4 = scoreboardPanel;
 
         // Add the panels to the main panel
         mainPanel.add(panel1, "Welcome Panel");
