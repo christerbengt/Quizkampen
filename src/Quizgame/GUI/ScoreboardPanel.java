@@ -29,20 +29,20 @@ public class ScoreboardPanel extends JPanel {
 
         // Username Label
         JLabel nameLabel = new JLabel(playerName, SwingConstants.CENTER);
-        nameLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
+        nameLabel.setBorder(new EmptyBorder(10, 20, 10, 20));  // Add some padding
         panel.add(nameLabel);
 
         // Category Scores
         for (int score : scores) {
             JLabel scoreLabel = new JLabel("Category Score: " + score, SwingConstants.CENTER);
-            scoreLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
+            scoreLabel.setBorder(new EmptyBorder(10, 20, 10, 20));  // Add some padding
             panel.add(scoreLabel);
         }
 
         // Total Score
         int totalScore = calculateTotalScore(scores);
         JLabel totalScoreLabel = new JLabel("Total Score: " + totalScore, SwingConstants.CENTER);
-        totalScoreLabel.setBorder(new EmptyBorder(10, 10, 10, 10));  // Add some padding
+        totalScoreLabel.setBorder(new EmptyBorder(10, 20, 10, 20));  // Add some padding
         panel.add(totalScoreLabel);
 
         return panel;
