@@ -3,6 +3,7 @@ package Quizgame.game_classes;
 import Quizgame.server_database.Question;
 
 import java.util.List;
+import java.util.Random;
 
 public class Round {
   final private String category;
@@ -33,8 +34,18 @@ public class Round {
     return isComplete;
   }
 
+  public Question getRandomQuestion() {
+    if (questionList == null || questionList.isEmpty()) {
+      return null;
+    }
+    Random random = new Random();
+    int randomIndex = random.nextInt(questionList.size());
+    return questionList.get(randomIndex);
+
+  }
 
 
-
-
+  public int getScore() {
+    return 0;
+  }
 }
