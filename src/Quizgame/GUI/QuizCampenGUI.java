@@ -11,9 +11,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     private static JPanel mainPanel;
 
     // Example player scores
-    int[] player1Scores = {10, 15}; // Example scores for player 1
-    int[] player2Scores = {12, 14}; // Example scores for player 2
-    ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
+
 
     public QuizCampenGUI() {
         setTitle("Quiz Campen");
@@ -22,6 +20,10 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
+
+        int[] player1Scores = {10, 15}; // Example scores for player 1
+        int[] player2Scores = {12, 14}; // Example scores for player 2
+        ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
 
         // Create four distinct panels
         // Like constructors, we need to create a method to read, categorys, questions and answers from files
