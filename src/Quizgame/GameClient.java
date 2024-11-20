@@ -37,7 +37,7 @@ public class GameClient {
     public boolean connect() {
         try {
             // Create socket connection
-            serverConnection = new Socket(InetAddress.getLocalHost(), 66666);
+            serverConnection = new Socket(InetAddress.getLocalHost(), 5000);
 
             // Create streams - order is important to prevent deadlock
             out = new ObjectOutputStream(serverConnection.getOutputStream());
@@ -135,7 +135,7 @@ public class GameClient {
     public static void main(String[] args) {
         try {
             String serverAddress = "localhost";
-            int serverPort = 66666;
+            int serverPort = 5000;
 
             // Parse command-line arguments
             if (args.length > 0) {
