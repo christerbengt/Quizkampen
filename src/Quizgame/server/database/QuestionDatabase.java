@@ -60,14 +60,4 @@ public class QuestionDatabase {
                 .map(e -> new Question(e.getQuestion(), e.getCategory(), e.getAnswerOption1(), e.getAnswerOption2(), e.getAnswerOption3(), e.getAnswerOption4(), e.getCorrectAnswer()))
                 .collect(Collectors.toList());
     }
-
-    ////////////////////////////////////////////////////////
-    //
-    //  Input: (String) User answer and correct answer.
-    //  Return: boolean
-    //
-    ////////////////////////////////////////////////////////
-    public boolean isQuestionCorrect(String answer, String correctAnswer) {
-        return answer.equalsIgnoreCase(correctAnswer);
-    }
 }
