@@ -12,6 +12,12 @@ public class QuestionDatabase {
         initDataBase(path);
     }
 
+
+    ////////////////////////////////////////////////////////
+    //
+    //  Input: path to working directory.
+    //
+    ////////////////////////////////////////////////////////
     private void initDataBase(String path) {
         File[] files = new File(path).listFiles();
         assert files != null;
@@ -22,6 +28,13 @@ public class QuestionDatabase {
         }
     }
 
+
+    ////////////////////////////////////////////////////////
+    //
+    //  Adds data to database based on file path.
+    //  Input: String path to file.
+    //
+    ////////////////////////////////////////////////////////
     public void populateDatabase(String path) {
         File f = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
@@ -35,6 +48,12 @@ public class QuestionDatabase {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //
+    //  Input: String category
+    //  Returns: a List of Questions based on category.
+    //
+    //////////////////////////////////////////////////////////////////////////
     public List<Question> getQuestionsByCategory(String category) {
         return questions.stream()
                 .filter(e -> e.getCategory().contains(category))
@@ -42,6 +61,12 @@ public class QuestionDatabase {
                 .collect(Collectors.toList());
     }
 
+    ////////////////////////////////////////////////////////
+    //
+    //  Input: (String) User answer and correct answer.
+    //  Return: boolean
+    //
+    ////////////////////////////////////////////////////////
     public boolean isQuestionCorrect(String answer, String correctAnswer) {
         return answer.equalsIgnoreCase(correctAnswer);
     }
