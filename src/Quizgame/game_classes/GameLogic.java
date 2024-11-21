@@ -1,6 +1,7 @@
 package Quizgame.game_classes;
 
 import Quizgame.GameProtocol;
+import Quizgame.server.database.Question;
 import Quizgame.server.database.QuestionDatabase;
 
 import java.util.*;
