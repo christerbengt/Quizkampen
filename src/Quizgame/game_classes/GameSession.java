@@ -38,7 +38,7 @@ public class GameSession {
   }
 
   public String getScoreBoard() {
-      return "Score" + player1.getName() + ":" + scorePlayer1 + "Score" + player1.getName() + ":" + scorePlayer2;
+      return "Score" + player1.getName() + ":" + scorePlayer1 + "Score" + player2.getName() + ":" + scorePlayer2;
   }
 }
 
