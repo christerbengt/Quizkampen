@@ -3,11 +3,13 @@ package Quizgame;
 import Quizgame.client.GUI.QuizCampenGUI;
 import Quizgame.GameProtocol.Message;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -148,6 +150,11 @@ public class GameClient {
                     }
                 }
             }
+
+            JOptionPane.showInputDialog(null, "Användare");
+            Scanner scanner = new Scanner(System.in);
+
+            
 
             QuizCampenGUI gui = new QuizCampenGUI();
             GameClient client = new GameClient(serverAddress, serverPort, gui);

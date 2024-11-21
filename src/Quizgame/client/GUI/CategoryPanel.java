@@ -1,5 +1,7 @@
 package Quizgame.client.GUI;
 
+import Quizgame.game_classes.Round;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,5 +1,7 @@
 package Quizgame.client.GUI;
 
+import Quizgame.game_classes.Round;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,10 +9,24 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class QuizCampenGUI extends JFrame implements ActionListener {
-    private static CardLayout cardLayout;
-    private static JPanel mainPanel;
+    CardLayout cardLayout;
+    JPanel mainPanel;
 
-    public QuizCampenGUI() {
+    public QuizCampenGUI(String category1, String category2, String category3,
+                         String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer,
+                         String player1Name, String player2Name, int[] player1Scores, int[] player2Scores) {
+
+
+        JPanel panel = createQuizCampenGUI(category1, category2, category3,
+                    questionText, answerText1, answerText2, answerText3, answerText4, correctAnswer,
+                    player1Name, player2Name, player1Scores, player2Scores);
+        add(panel);
+    }
+
+
+    public JPanel createQuizCampenGUI(String category1, String category2, String category3,
+                                      String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer,
+                                      String player1Name, String player2Name, int[] player1Scores, int[] player2Scores) {
         setTitle("Quiz Campen");
         setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -18,13 +34,11 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        int[] player1Scores = {10, 15}; // Example scores for player 1
-        int[] player2Scores = {12, 14}; // Example scores for player 2
 
         WelcomePanel welcomePanel = new WelcomePanel(this);
-        CategoryPanel categoryPanel = new CategoryPanel(this,"category 1", "category 2", "category 3");
-        QuestionPanel questionPanel = new QuestionPanel(this,"Question 1: What is 2 + 2?", "5", "3", "2", "4", "4");
-        ScoreboardPanel scoreboardPanel = new ScoreboardPanel("Charlie", "Christer", player1Scores, player2Scores);
+        CategoryPanel categoryPanel = new CategoryPanel(this, category1, category2, category3);
+        QuestionPanel questionPanel = new QuestionPanel(this,questionText, answerText1, answerText2, answerText3, answerText4, correctAnswer);
+        ScoreboardPanel scoreboardPanel = new ScoreboardPanel(player1Name, player2Name, player1Scores, player2Scores);
 
         // Create four distinct panels
         // Like constructors, we need to create a method to read, categorys, questions and answers from files
@@ -43,6 +57,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
         add(mainPanel);
 
         setVisible(true);
+
     }
 
     @Override
