@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import Quizgame.GameProtocol.Message;
 
 public class GameServer {
     private final ServerSocket serverSocket;
@@ -162,23 +163,6 @@ public class GameServer {
                 System.err.println("Error closing client connection: " + e.getMessage());
             }
         }
-    }
-
-    /**
-     * Simple message class for client-server communication
-     */
-    public static class Message implements Serializable {
-        private static final long serialVersionUID = 1L;
-        private final String type;
-        private final String content;
-
-        public Message(String type, String content) {
-            this.type = type;
-            this.content = content;
-        }
-
-        public String getType() { return type; }
-        public String getContent() { return content; }
     }
 
     // Main method for testing
