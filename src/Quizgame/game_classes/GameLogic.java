@@ -50,7 +50,7 @@ public class GameLogic {
             return new GameProtocol.Message("ERROR", "Cannot join game in progress");
         }
 
-        Player newPlayer = new Player(clientId, playerName);
+        Player newPlayer = new Player(clientId, playerName, 0);
         players.put(clientId, newPlayer);
 
         // If we have enough players, start the game
@@ -98,7 +98,21 @@ public class GameLogic {
     }
 
     private void startNewGame() {
-        currentSession = new GameSession();
+
+        if (players.size() < 2) {
+            throw new IllegalStateException("Not enough players to start a game");
+        }
+
+        Player[] playerArray = players.values().toArray(new Player[0]);
+        int numRounds = 2;
+        int roundIndex = 0;
+        currentSession = new GameSession(
+                UUID.randomUUID().toString(),
+                playerArray[0],
+                playerArray[1],
+                numRounds,
+                roundIndex
+                );
         questionNumber = 0;
         currentState = GameState.QUESTION_DISPLAY;
         sendNextQuestion();
@@ -147,7 +161,7 @@ class Player {
     private final String name;
     private int score;
 
-    public Player(String id, String name) {
+    public Player(String id, String name, int score) {
         this.id = id;
         this.name = name;
         this.score = 0;

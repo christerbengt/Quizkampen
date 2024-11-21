@@ -6,15 +6,13 @@ public class GameSession {
   private final String sessionId;
   private final Player player1;
   private final Player player2;
-  //private GameState currentState;
   private final List<Round> rounds;
   private int currentRoundIndex;
 
-  public GameSession(String sessionId, Player player1, Player player2, List<Round> rounds) {
+  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex) {
     this.sessionId = sessionId;
     this.player1 = player1;
     this.player2 = player2;
-    //this.currentState = currentState;
     this.rounds = rounds;
     this.currentRoundIndex = 0;
   }
