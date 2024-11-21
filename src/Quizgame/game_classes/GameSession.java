@@ -8,13 +8,15 @@ public class GameSession {
   private int currentRoundIndex;
   private int scorePlayer1 = 0;
   private int scorePlayer2 = 0;
+  private Round currentRound;
 
-  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex) {
+  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex, String topic) {
     this.sessionId = sessionId;
     this.player1 = player1;
     this.player2 = player2;
     this.rounds = rounds;
     this.currentRoundIndex = currentRoundIndex;
+    this.currentRound = new Round(topic);
   }
 
   public void addPoint(Player player) {
