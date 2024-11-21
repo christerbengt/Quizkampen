@@ -50,7 +50,7 @@ public class GameLogic {
             return new GameProtocol.Message("ERROR", "Cannot join game in progress");
         }
 
-        Player newPlayer = new Player(clientId, playerName, 0);
+        Player newPlayer = new Player(clientId, playerName, new ArrayList<>());
         players.put(clientId, newPlayer);
 
         // If we have enough players, start the game
@@ -73,7 +73,7 @@ public class GameLogic {
             boolean isCorrect = currentQuestion.isCorrectAnswer(choice);
 
             if (isCorrect) {
-                player.addPoint(); // Simple scoring - just add one point
+                currentSession.addPoint(player); // Simple scoring - just add one point
                 return new GameProtocol.Message("ANSWER_RESULT", "Correct!");
             } else {
                 return new GameProtocol.Message("ANSWER_RESULT", "Incorrect!");
@@ -113,6 +113,9 @@ public class GameLogic {
                 numRounds,
                 roundIndex
                 );
+
+        playerArray[0].getGameSessions().add(currentSession);
+        playerArray[1].getGameSessions().add(currentSession);
         questionNumber = 0;
         currentState = GameState.QUESTION_DISPLAY;
         sendNextQuestion();
@@ -156,7 +159,7 @@ public class GameLogic {
 }
 
 // Modified Player class for simple scoring
-class Player {
+/* class Player {
     private final String id;
     private final String name;
     private int score;
@@ -179,6 +182,8 @@ class Player {
         return score;
     }
 }
+*/
+
 
 // Example Question class structure
 class Question {
