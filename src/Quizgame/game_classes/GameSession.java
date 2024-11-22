@@ -17,6 +17,10 @@ public class GameSession {
     this.currentRoundIndex = currentRoundIndex;
   }
 
+  public String getSessionId() {
+    return sessionId;
+  }
+
   public void addPoint(Player player) {
     if (player.equals(player1)) {
       scorePlayer1++;

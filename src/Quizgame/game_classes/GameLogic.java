@@ -97,6 +97,68 @@ public class GameLogic {
             return new GameProtocol.Message("NEXT_QUESTION", "Question " + questionNumber + " beginning");
         }
     }
+    // Creates a new game session between two players
+    public GameSession createNewGame(String player1Id, String player2Id) {
+        Player player1 = new Player(player1Id, "Player" + player1Id, new ArrayList<>());
+        Player player2 = new Player(player2Id, "Player" + player2Id, new ArrayList<>());
+
+        GameSession session = new GameSession(
+                UUID.randomUUID().toString(),
+                player1,
+                player2,
+                2,
+                0
+        );
+
+        player1.getGameSessions().add(session);
+        player2.getGameSessions().add(session);
+
+        // Store players in the map
+        players.put(player1Id, player1);
+        players.put(player2Id, player2);
+
+        currentState = GameState.QUESTION_DISPLAY;
+        return session;
+    }
+
+    // Handles a player's answer submission
+    public GameProtocol.Message handleAnswer(String sessionId, String playerId, String answer) {
+        if (currentState != GameState.AWAITING_ANSWERS) {
+            return new GameProtocol.Message("ERROR", "Not accepting answers at this time");
+        }
+
+        Player player = players.get(playerId);
+        if (player == null) {
+            return new GameProtocol.Message("ERROR", "Player not found");
+        }
+
+        try {
+            boolean isCorrect = questionDB.isQuestionCorrect(answer, currentQuestion.getCorrectAnswer());
+            if (isCorrect) {
+                currentSession.addPoint(player);
+                return new GameProtocol.Message("ANSWER_RESULT", "Correct!");
+            } else {
+                return new GameProtocol.Message("ANSWER_RESULT", "Incorrect!");
+            }
+        } catch (Exception e) {
+            return new GameProtocol.Message("ERROR", "Invalid answer");
+        }
+    }
+
+
+    // Handles when a player leaves the game
+    public void handlePlayerLeave(String sessionId, String playerId) {
+        Player player = players.get(playerId);
+        if (player != null) {
+            // Remove the game session from player's list
+            player.getGameSessions().removeIf(session ->
+                    session.getSessionId().equals(sessionId));
+
+            // Notify other player if needed
+            // Reset game state if needed
+            currentState = GameState.WAITING_FOR_PLAYERS;
+        }
+    }
 
     private void startNewGame() {
 
