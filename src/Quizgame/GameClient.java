@@ -2,6 +2,7 @@ package Quizgame;
 
 import Quizgame.client.GUI.QuizCampenGUI;
 import Quizgame.GameProtocol.Message;
+import Quizgame.game_classes.Round;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -151,10 +152,12 @@ public class GameClient {
                 }
             }
 
-            JOptionPane.showInputDialog(null, "Användare");
             Scanner scanner = new Scanner(System.in);
+            JOptionPane.showInputDialog(null, "Användare");
+            String player = scanner.nextLine();
 
-            
+            Round round = new Round("Math");
+            String question = round.getQuestion().getQuestion();
 
             QuizCampenGUI gui = new QuizCampenGUI();
             GameClient client = new GameClient(serverAddress, serverPort, gui);

@@ -24,7 +24,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
     }
 
 
-    public JPanel createQuizCampenGUI(String category1, String category2, String category3,
+    private JPanel createQuizCampenGUI(String category1, String category2, String category3,
                                       String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer,
                                       String player1Name, String player2Name, int[] player1Scores, int[] player2Scores) {
         setTitle("Quiz Campen");
@@ -58,6 +58,7 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
 
         setVisible(true);
 
+        return mainPanel;
     }
 
     @Override
