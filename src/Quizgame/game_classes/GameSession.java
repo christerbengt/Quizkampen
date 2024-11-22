@@ -5,7 +5,6 @@ import Quizgame.server.database.Question;
 import java.util.List;
 
 public class GameSession {
-  private final String sessionId;
   private final Player player1;
   private final Player player2;
   private final int rounds;
@@ -14,12 +13,12 @@ public class GameSession {
   private int scorePlayer2 = 0;
   private Round currentRound;
 
-  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex, String topic) {
-    this.sessionId = sessionId;
-    this.player1 = player1;
-    this.player2 = player2;
+  public GameSession(int rounds, String p1, String p2) {
+    //this.sessionId = sessionId;
+    this.player1 = new Player(p1);
+    this.player2 = new Player(p2);
     this.rounds = rounds;
-    this.currentRoundIndex = currentRoundIndex;
+    this.currentRoundIndex = 1;
   }
 
   public void createNewRound(String topic){
@@ -32,16 +31,18 @@ public class GameSession {
   //  Input: Player, String answer, Question question
   //
   ////////////////////////////////////////////////////////////////
-  public void isAnswerCorrect(Player p, String answer, Question question) {
-    if (answer.equals(question.getCorrectAnswer())){
-      if (p.equals(player1)) {
-        scorePlayer1++;
+  public boolean isAnswerCorrect(String playerName, String answer, Question question) {
+    if (answer.equalsIgnoreCase(question.getCorrectAnswer())){
+      if (playerName.equals(player1.getName())){
+        player1.addPoint();
       } else {
-        scorePlayer2++;
+        player2.addPoint();
       }
+      return true;
+    } else {
+      return false;
     }
   }
-
 
   /////////////////////////////////////////////////////////////
   //
@@ -52,17 +53,21 @@ public class GameSession {
     return currentRound.getRandomQuestionList();
   }
 
-
-
   public boolean isRoundComplete() {
     return currentRoundIndex >= rounds;
   }
 
-  public int getScore(Player player) {
-    if (player.equals(player1)) {
-      return scorePlayer1;
+  /////////////////////////////////////////////////////////////
+  //
+  //  Input:
+  //  Return: int score representation for Player
+  //
+  ////////////////////////////////////////////////////////////
+  public int getScore(String player) {
+    if (player.equals(player1.getName())){
+      return player1.getScore();
     } else {
-      return scorePlayer2;
+      return player2.getScore();
     }
   }
 
@@ -73,16 +78,6 @@ public class GameSession {
   ////////////////////////////////////////////////////////////
   public String getScoreBoard() {
       return "Score" + player1.getName() + ":" + scorePlayer1 + "Score" + player2.getName() + ":" + scorePlayer2;
-  }
-
-  ////////////////////////////////////////////////////////
-  //
-  //  Input: (String) User answer and correct answer.
-  //  Return: boolean
-  //
-  ////////////////////////////////////////////////////////
-  public boolean isQuestionCorrect(String answer, String correctAnswer) {
-    return answer.equalsIgnoreCase(correctAnswer);
   }
 }
 

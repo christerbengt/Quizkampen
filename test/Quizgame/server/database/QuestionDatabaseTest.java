@@ -15,9 +15,4 @@ public class QuestionDatabaseTest {
             System.out.println(database.getQuestionsByCategory("Sport").get(i).getQuestion());
         }
     }
-
-    @Test
-    public void isQuestionCorrect(){
-        assertTrue(database.isQuestionCorrect("xxx", "XXX"));
-    }
 }

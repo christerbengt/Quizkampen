@@ -8,7 +8,6 @@ import java.util.*;
 public class Round {
     private final List<Question> questionList;
     private final List<Question> randomQuestionList = new ArrayList<>();
-    // private Map<Player, List<Answer>> playerAnswers;
     private boolean isComplete;
     private int counter = 0;
 
@@ -22,18 +21,6 @@ public class Round {
         QuestionDatabase questionDatabase = new QuestionDatabase("files/");
         return questionDatabase.getQuestionsByCategory(topic);
     }
-
-    public Object getPlayer() {
-        return null;
-    }
-
-    // public void submitAnswer(Player player, Answer answer) {
-    // }
-
-
-    // public int getRoundScore(Player player) {
-    //  return 0;
-    // }
 
     public boolean isComplete() {
       return isComplete;
@@ -52,9 +39,5 @@ public class Round {
             isComplete = true;
         }
         return randomQuestionList;
-    }
-
-    public int getScore() {
-        return 0;
     }
 }
