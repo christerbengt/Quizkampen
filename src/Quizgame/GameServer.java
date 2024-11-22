@@ -193,4 +193,12 @@ public class GameServer {
             }
         }
     }
+    public static void main(String[] args) {
+        try {
+            GameServer server = new GameServer(5000);  // Port 5000
+            server.start();
+        } catch (IOException e) {
+            System.err.println("Could not start server: " + e.getMessage());
+        }
+    }
 }
