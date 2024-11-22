@@ -20,6 +20,7 @@ public class GameSession {
     this.player2 = player2;
     this.rounds = rounds;
     this.currentRoundIndex = currentRoundIndex;
+    this.currentRound = new Round(topic);
   }
 
   public void createNewRound(String topic){
