@@ -5,17 +5,26 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import Quizgame.GameProtocol.Message;
+import Quizgame.game_classes.GameLogic;
+import Quizgame.game_classes.GameSession;
+import Quizgame.server.database.QuestionDatabase;
 
 public class GameServer {
     private final ServerSocket serverSocket;
     private final ExecutorService clientHandlers;
     private final Map<String, ClientHandler> connectedClients;
+    private final Queue<String> waitingPlayers;
+    private final Map<String, GameSession> activeSessions;
+    private final GameLogic gameLogic;
     private volatile boolean running;
 
     public GameServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
         this.clientHandlers = Executors.newCachedThreadPool();
         this.connectedClients = new ConcurrentHashMap<>();
+        this.waitingPlayers = new ConcurrentLinkedQueue<>();
+        this.activeSessions = new ConcurrentHashMap<>();
+        this.gameLogic = new GameLogic(new QuestionDatabase("files/")); //Adjust path as needed
         this.running = false;
     }
 
@@ -25,6 +34,8 @@ public class GameServer {
     public void start() {
         running = true;
         System.out.println("Game Server starting on port " + serverSocket.getLocalPort());
+
+        startMatchmaking();
 
         // Main server loop
         while (running) {
@@ -39,34 +50,42 @@ public class GameServer {
         }
     }
 
-    /**
-     * Creates a new handler for each connected client
-     */
-    private void handleNewClient(Socket clientSocket) {
-        ClientHandler handler = new ClientHandler(clientSocket);
-        clientHandlers.execute(handler);
+    private void startMatchmaking() {
+        Thread matchmaker = new Thread(() -> {
+            while (running) {
+                matchPlayers();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        matchmaker.setDaemon(true);
+        matchmaker.start();
+    }
+    private void matchPlayers() {
+        while (waitingPlayers.size() >= 2) {
+            String player1Id = waitingPlayers.poll();
+            String player2Id = waitingPlayers.poll();
+
+            if (player1Id != null && player2Id != null &&
+               connectedClients.containsKey(player1Id) &&
+               connectedClients.containsKey(player2Id)) {
+
+               startNewGame(player1Id, player2Id);
+            }
+        }
     }
 
-    /**
-     * Stops the server and closes all client connections
-     */
-    public void stop() {
-        running = false;
-        try {
-            // Close all client connections
-            for (ClientHandler handler : connectedClients.values()) {
-                handler.disconnect();
-            }
+    private void startNewGame(String player1Id, String player2Id) {
+        GameSession session = gameLogic.createNewGame(player1Id, player2Id);
+        activeSessions.put(session.getSessionId(), session);
 
-            // Cleanup resources
-            serverSocket.close();
-            clientHandlers.shutdown();
-            if (!clientHandlers.awaitTermination(5, TimeUnit.SECONDS)) {
-                clientHandlers.shutdownNow();
-            }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error shutting down server: " + e.getMessage());
-        }
+        Message gameStartMsg = new Message("GAME_START", session.getSessionId());
+        connectedClients.get(player1Id).sendToClient(gameStartMsg);
+        connectedClients.get(player2Id).sendToClient(gameStartMsg);
     }
 
     /**
