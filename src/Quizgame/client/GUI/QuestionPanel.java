@@ -9,8 +9,10 @@ import java.util.Collections;
 
 public class QuestionPanel extends JPanel implements ActionListener {
 
-    private String correctAnswer;
-    private QuizCampenGUI parent;
+    private QuizCampenGUI parent;              // Reference to the main GUI
+    private JLabel questionText;               // Label to display the question
+    private ArrayList<JButton> answerButtons;   // List of answer buttons
+    private String correctAnswer;                // Store the correct answer text
 
     public QuestionPanel(QuizCampenGUI parent, String questionText, String answerText1, String answerText2, String answerText3, String answerText4, String correctAnswer) {
         this.correctAnswer = correctAnswer;
@@ -68,6 +70,22 @@ public class QuestionPanel extends JPanel implements ActionListener {
         mainPanel.add(centerPanel2, BorderLayout.NORTH);
 
         return mainPanel;
+    }
+
+    public void updateQuestion(String questionData) {
+        // Expected format: "Question?|Answer1|Answer2|Answer3|Answer4|CorrectAnswer"
+        String[] parts = questionData.split("\\|");
+        String questionText = parts[0];
+        correctAnswer = parts[parts.length - 1]; // Last item is the correct answer
+
+        // Clear previous buttons and set up new buttons
+        answerButtons.clear();
+        for (int i = 1; i < parts.length - 1; i++) { // Exclude the question and the correct answer
+            JButton answerButton = new JButton(parts[i]);
+            answerButton.setActionCommand(parts[i]); // Set the button action command
+            answerButton.addActionListener(this);    // Add action listener
+            answerButtons.add(answerButton);
+        }
     }
 
     private boolean checkAnswer(String answer) {
