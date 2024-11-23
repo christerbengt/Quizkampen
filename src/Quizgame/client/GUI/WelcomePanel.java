@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 public class WelcomePanel extends JPanel implements ActionListener {
     private QuizCampenGUI parent;
+    private JTextField textField;
+    private JLabel errorMessage;
 
     public WelcomePanel(QuizCampenGUI parent) {
         this.parent = parent;
@@ -21,7 +23,7 @@ public class WelcomePanel extends JPanel implements ActionListener {
         textField.setFont(new Font("Arial", Font.PLAIN, 16));
         textField.setToolTipText("Enter you name here");
         textField.setMargin(new Insets(5, 10, 5, 10));
-        textField.setMaximumSize(new Dimension(180, 30));
+        textField.setMaximumSize(new Dimension(200, 30));
         return textField;
     }
 
@@ -46,12 +48,21 @@ public class WelcomePanel extends JPanel implements ActionListener {
         mainPanel.add(centerPanel2, BorderLayout.NORTH);
 
 
-        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.PAGE_AXIS));
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         JLabel nameLabel = new JLabel("Please enter your name:");
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        errorMessage = new JLabel("Input field can't be empty!");
+        errorMessage.setFont(new Font("Arial", Font.ITALIC, 12));
+        errorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        errorMessage.setForeground(Color.red);
+        errorMessage.setVisible(false);
+
         inputPanel.add(nameLabel);
-        inputPanel.add(createTextField());
+        inputPanel.add(textField = createTextField());
+        inputPanel.add(errorMessage);
+
         mainPanel.add(inputPanel, BorderLayout.CENTER);
 
 
@@ -69,7 +80,13 @@ public class WelcomePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        parent.showNextPanel();
+        String playerName = textField.getText().trim();
+        if(playerName.isEmpty()) {
+            errorMessage.setVisible(true);
+        } else {
+            errorMessage.setVisible(false);
+            parent.showNextPanel();
+        }
 
     }
 }
