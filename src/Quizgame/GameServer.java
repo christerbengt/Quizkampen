@@ -7,7 +7,6 @@ import java.util.concurrent.*;
 import Quizgame.GameProtocol.Message;
 import Quizgame.game_classes.GameLogic;
 import Quizgame.game_classes.GameSession;
-import Quizgame.game_classes.Player;
 import Quizgame.server.database.QuestionDatabase;
 
 public class GameServer {
@@ -15,7 +14,6 @@ public class GameServer {
     private final ExecutorService clientHandlers;
     private final Map<String, ClientHandler> connectedClients;
     private final Queue<String> waitingPlayers;
-    private final Map<String, GameSession> activeSessions;
     private final GameLogic gameLogic;
     private volatile boolean running;
 
@@ -24,22 +22,15 @@ public class GameServer {
         this.clientHandlers = Executors.newCachedThreadPool();
         this.connectedClients = new ConcurrentHashMap<>();
         this.waitingPlayers = new ConcurrentLinkedQueue<>();
-        this.activeSessions = new ConcurrentHashMap<>();
-        this.gameLogic = new GameLogic(new QuestionDatabase("files/")); // Adjust path as needed
+        this.gameLogic = new GameLogic(new QuestionDatabase("files/"));
         this.running = false;
     }
 
-    /**
-     * Starts the server and begins accepting client connections
-     */
     public void start() {
         running = true;
         System.out.println("Game Server starting on port " + serverSocket.getLocalPort());
-
-        // Start a separate thread to match players
         startMatchmaking();
 
-        // Main server loop
         while (running) {
             try {
                 Socket clientSocket = serverSocket.accept();
@@ -51,6 +42,7 @@ public class GameServer {
             }
         }
     }
+
     private void handleNewClient(Socket clientSocket) {
         ClientHandler handler = new ClientHandler(clientSocket);
         clientHandlers.execute(handler);
@@ -61,7 +53,7 @@ public class GameServer {
             while (running) {
                 matchPlayers();
                 try {
-                    Thread.sleep(1000); // Check for matches every second
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -88,12 +80,19 @@ public class GameServer {
 
     private void startNewGame(String player1Id, String player2Id) {
         GameSession session = gameLogic.createNewGame(player1Id, player2Id);
-        activeSessions.put(session.getSessionId(), session);
 
-        // Notify both players that game is starting
+        // Notify both players that game is starting and who goes first
         Message gameStartMsg = new Message("GAME_START", session.getSessionId());
         connectedClients.get(player1Id).sendToClient(gameStartMsg);
         connectedClients.get(player2Id).sendToClient(gameStartMsg);
+
+        // Tell player 1 to select category
+        Message selectCategoryMsg = new Message("SELECT_CATEGORY", "Please select a category");
+        connectedClients.get(player1Id).sendToClient(selectCategoryMsg);
+
+        // Tell player 2 they're waiting
+        Message waitMsg = new Message("WAIT", "Waiting for Player 1 to select category");
+        connectedClients.get(player2Id).sendToClient(waitMsg);
     }
 
     private class ClientHandler implements Runnable {
@@ -101,7 +100,7 @@ public class GameServer {
         private final ObjectInputStream in;
         private final ObjectOutputStream out;
         private final String clientId;
-        private GameSession currentGame;
+        private String currentSessionId;
 
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
@@ -146,17 +145,32 @@ public class GameServer {
                     sendToClient(new Message("QUEUE_STATUS", "Waiting for opponent..."));
                     break;
 
+                case "CATEGORY_SELECT":
+                    if (currentSessionId != null) {
+                        Message response = gameLogic.handleCategorySelection(
+                                currentSessionId, clientId, message.getContent());
+                        broadcastToSession(response);
+
+                        if (response.getType().equals("CATEGORY_SELECTED")) {
+                            // Send first question to player 1
+                            Message questionMsg = gameLogic.getCurrentQuestion(currentSessionId);
+                            sendToClient(questionMsg);
+                        }
+                    }
+                    break;
+
                 case "ANSWER":
-                    if (currentGame != null) {
-                        Message response = gameLogic.handleAnswer(currentGame.getSessionId(), clientId, message.getContent());
-                        sendToClient(response);
+                    if (currentSessionId != null) {
+                        Message response = gameLogic.handleAnswer(
+                                currentSessionId, clientId, message.getContent());
+                        handleAnswerResponse(response);
                     }
                     break;
 
                 case "LEAVE_GAME":
-                    if (currentGame != null) {
-                        gameLogic.handlePlayerLeave(currentGame.getSessionId(), clientId);
-                        currentGame = null;
+                    if (currentSessionId != null) {
+                        gameLogic.handlePlayerLeave(currentSessionId, clientId);
+                        currentSessionId = null;
                     }
                     break;
 
@@ -165,15 +179,53 @@ public class GameServer {
             }
         }
 
+        private void handleAnswerResponse(Message response) {
+            switch (response.getType()) {
+                case "ANSWER_RECORDED":
+                    // Send next question if available
+                    Message nextQuestion = gameLogic.getCurrentQuestion(currentSessionId);
+                    sendToClient(nextQuestion);
+                    break;
+
+                case "TURN_END":
+                    // Switch to player 2's turn
+                    broadcastToSession(new Message("TURN_SWITCH", "Switching to Player 2"));
+                    Message firstQuestion = gameLogic.getCurrentQuestion(currentSessionId);
+                    // Send to the other player
+                    broadcastToSession(firstQuestion);
+                    break;
+
+                case "ROUND_COMPLETE":
+                    Message results = gameLogic.getRoundResults(currentSessionId);
+                    broadcastToSession(results);
+                    break;
+
+                case "GAME_COMPLETE":
+                    broadcastToSession(response);
+                    // Clean up session
+                    currentSessionId = null;
+                    break;
+            }
+        }
+
         public void sendToClient(Message message) {
             try {
                 out.writeObject(message);
                 out.flush();
-                // Reset the stream to prevent caching issues
-                out.reset();
+                out.reset(); // Prevent object caching
             } catch (IOException e) {
                 System.err.println("Error sending message to client " + clientId + ": " + e.getMessage());
                 disconnect();
+            }
+        }
+
+        private void broadcastToSession(Message message) {
+            if (currentSessionId != null) {
+                for (ClientHandler handler : connectedClients.values()) {
+                    if (currentSessionId.equals(handler.currentSessionId)) {
+                        handler.sendToClient(message);
+                    }
+                }
             }
         }
 
@@ -181,8 +233,8 @@ public class GameServer {
             try {
                 connectedClients.remove(clientId);
                 waitingPlayers.remove(clientId);
-                if (currentGame != null) {
-                    gameLogic.handlePlayerLeave(currentGame.getSessionId(), clientId);
+                if (currentSessionId != null) {
+                    gameLogic.handlePlayerLeave(currentSessionId, clientId);
                 }
                 if (out != null) out.close();
                 if (in != null) in.close();
@@ -193,9 +245,10 @@ public class GameServer {
             }
         }
     }
+
     public static void main(String[] args) {
         try {
-            GameServer server = new GameServer(5000);  // Port 5000
+            GameServer server = new GameServer(5000);
             server.start();
         } catch (IOException e) {
             System.err.println("Could not start server: " + e.getMessage());
