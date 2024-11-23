@@ -1,5 +1,7 @@
 package Quizgame.game_classes;
 
+import java.util.List;
+
 public class GameSession {
   private final String sessionId;
   private final Player player1;
@@ -8,13 +10,15 @@ public class GameSession {
   private int currentRoundIndex;
   private int scorePlayer1 = 0;
   private int scorePlayer2 = 0;
+  private final List<Round> roundList;
 
-  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex) {
+  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex, List<Round> roundList) {
     this.sessionId = sessionId;
     this.player1 = player1;
     this.player2 = player2;
     this.rounds = rounds;
     this.currentRoundIndex = currentRoundIndex;
+    this.roundList = roundList;
   }
 
   public String getSessionId() {
