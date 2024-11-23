@@ -75,6 +75,37 @@ public class GameClient {
         }
     }
 
+    /*private void processServerMessage(Message message) {
+        switch (message.getType()) {
+            case "WELCOME":
+                clientId = message.getContent(); // Store client ID
+                gui.updateStatus("Connected as client: " + clientId);
+                break;
+
+            case "GAME_START":
+                gui.showNextPanel(); // Proceed to the next panel
+                break;
+
+            case "QUESTION":
+                gui.updateQuestion(message.getContent()); // Update the question in the panel
+                break;
+
+            case "ANSWER_RESULT":
+                gui.updateStatus(message.getContent()); // Show feedback about the answer
+                break;
+
+            case "GAME_END":
+                gui.showFinalScores(message.getContent()); // Update scoreboard with final scores
+                break;
+
+            default:
+                System.out.println("Unknown message type: " + message.getType());
+        }
+    }
+
+     */
+
+
     // Process messages received from server
     private void processServerMessage(Message message) {
         switch (message.getType()) {
