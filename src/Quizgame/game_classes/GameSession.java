@@ -10,15 +10,15 @@ public class GameSession {
   private int currentRoundIndex;
   private int scorePlayer1 = 0;
   private int scorePlayer2 = 0;
-  private final List<Round> roundList;
+  // private final List<Round> roundList;
 
-  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex, List<Round> roundList) {
+  public GameSession(String sessionId, Player player1, Player player2, int rounds, int currentRoundIndex) {
     this.sessionId = sessionId;
     this.player1 = player1;
     this.player2 = player2;
     this.rounds = rounds;
     this.currentRoundIndex = currentRoundIndex;
-    this.roundList = roundList;
+
   }
 
   public String getSessionId() {
@@ -47,6 +47,13 @@ public class GameSession {
 
   public String getScoreBoard() {
       return "Score" + player1.getName() + ":" + scorePlayer1 + "Score" + player2.getName() + ":" + scorePlayer2;
+  }
+
+  public Player getPlayer1() {
+    return player1;
+  }
+  public Player getPlayer2() {
+    return player2;
   }
 }
 
