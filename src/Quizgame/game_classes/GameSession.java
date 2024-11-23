@@ -79,6 +79,14 @@ public class GameSession {
   public String getScoreBoard() {
       return "Score" + player1.getName() + ":" + scorePlayer1 + "Score" + player2.getName() + ":" + scorePlayer2;
   }
+
+  public Player getPlayer1() {
+    return player1;
+  }
+
+  public Player getPlayer2() {
+    return player2;
+  }
 }
 
 
