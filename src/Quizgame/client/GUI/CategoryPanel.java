@@ -1,5 +1,7 @@
 package Quizgame.client.GUI;
 
+import Quizgame.GameClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,6 +80,9 @@ like russian dolls. Could not figure out a way around this.
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String selectedCategory = ((JButton) e.getSource()).getText(); // Get the selected category
+        GameClient client = new GameClient("localhost", 5000, parent); // Ensure this references the correct GameClient instance
+        client.sendToServer("CATEGORY_SELECTED", selectedCategory); // Send the selected category message
         parent.showNextPanel();
     }
 }

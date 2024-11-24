@@ -1,5 +1,7 @@
 package Quizgame.client.GUI;
 
+import Quizgame.GameClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -87,6 +89,8 @@ public class WelcomePanel extends JPanel implements ActionListener {
             errorMessage.setVisible(false);
             parent.showNextPanel();
         }
+        GameClient client = new GameClient("localhost", 5000, parent); // Ensure this references the correct GameClient instance
+        client.sendToServer("JOIN_QUEUE", playerName); // Send the selected category message
 
     }
 }
