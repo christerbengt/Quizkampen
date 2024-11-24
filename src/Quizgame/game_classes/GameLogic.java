@@ -27,7 +27,7 @@ public class GameLogic {
     private final Map<String, Map<String, List<Boolean>>> playerAnswers; // sessionId -> playerId -> answers
 
     // Configuration constants (could be moved to properties file)
-    private static final int QUESTIONS_PER_ROUND = 3;
+    private static final int QUESTIONS_PER_ROUND = 2;
     private static final int TOTAL_ROUNDS = 6;
 
     public GameLogic(QuestionDatabase questionDB) {
