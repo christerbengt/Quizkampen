@@ -12,11 +12,15 @@ public class SSPlayer {
     Socket socket;
     BufferedReader input;
     PrintWriter output;
+    int score = 0;
+    boolean isQuestionAnswered = false;
+    int state;
 
 
     public SSPlayer(Socket socket, String name) {
         this.socket = socket;
         this.name = name;
+        this.state = 0;
         try {
             input = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
@@ -36,6 +40,13 @@ public class SSPlayer {
         }
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 
     public void send(String mess){
         output.println(mess);

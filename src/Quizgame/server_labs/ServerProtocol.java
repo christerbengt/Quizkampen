@@ -1,38 +1,70 @@
 package Quizgame.server_labs;
 
 import Quizgame.game_classes.Player;
+import Quizgame.server.database.Question;
 import Quizgame.server.database.QuestionDatabase;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ServerProtocol {
     private final QuestionDatabase questionDatabase = new QuestionDatabase("files/");
-    final protected int gameStart = 0;
-    final protected int requestTopics = 1;
-    final protected int responseTopics = 2;
-    final protected int responseQuestion1 = 3;
-    final protected int responseQuestion2 = 4;
+    private final Question[] roundQuestions = new Question[2];
+    public int round;
+    public int numberOfRounds;
+    public boolean isGameOver = false;
+    private int counterQuestion1 = 0;
+    private int counterQuestion2 = 0;
     Player player1;
     Player player2;
 
-    protected int state = gameStart;
 
-    public ServerProtocol() {
-
+    public ServerProtocol(int numberOfRounds) {
+        this.round = 0;
+        this.numberOfRounds = numberOfRounds;
     }
 
-    public String output(String clientInput){
-        if (player1 != null && player2 != null){
-            player1 = new Player(clientInput, gameStart);
-            return questionDatabase.getQuestionCategories();
-        } else if (player1 != null){
-            player2 = new Player(clientInput, gameStart);
-        }
-        if (state == gameStart){
-            state = requestTopics;
-            return "Welcome to Quizgame!";
-        } else if (state == requestTopics){
+    public boolean isGameOver(){
+        return round == numberOfRounds;
+    }
 
+    public boolean isQuestionOneComplete() {
+        return counterQuestion1 > 3;
+    }
+
+    public boolean isQuestionTwoComplete() {
+        return counterQuestion2 > 1;
+    }
+
+    public Question question1(){
+        counterQuestion1++;
+        return roundQuestions[0];
+    }
+
+    public Question question2(){
+        counterQuestion2++;
+        return roundQuestions[1];
+    }
+
+    public QuestionDatabase getQuestionDatabase() {
+        return questionDatabase;
+    }
+
+    public void setRoundQuestions(String topic) {
+        List<Question> questions = questionDatabase.getQuestionsByCategory(topic);
+        Collections.shuffle(questions);
+        roundQuestions[0] = questions.get(0);
+        roundQuestions[1] = questions.get(1);
+    }
+
+    public String output(String clientInput, SSPlayer currentPlayer, SSPlayer opponentPlayer){
+        if (currentPlayer.getState() == 0 && opponentPlayer.getState() == 0){
+            currentPlayer.setState(1);
             return questionDatabase.getQuestionCategories();
+        } else if (opponentPlayer.getState() == 0){
+            opponentPlayer.setState(1);
         }
+
         return "Invalid input";
     }
 }
