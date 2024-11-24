@@ -60,4 +60,18 @@ public class QuestionDatabase {
                 .map(e -> new Question(e.getQuestion(), e.getCategory(), e.getAnswerOption1(), e.getAnswerOption2(), e.getAnswerOption3(), e.getAnswerOption4(), e.getCorrectAnswer()))
                 .collect(Collectors.toList());
     }
+
+    public String getQuestionCategories() {
+        List<String> topics = questions.stream().map(Question::getCategory).toList();
+        List<String> filterdTopics = topics.stream().distinct().toList();
+        StringBuilder returnVal = new StringBuilder();
+        for (int i = 0; i < filterdTopics.size(); i++) {
+            if (filterdTopics.size() - 1 > i){
+                returnVal.append(filterdTopics.get(i)).append(",");
+            } else {
+                returnVal.append(filterdTopics.get(i));
+            }
+        }
+        return returnVal.toString();
+     }
 }

@@ -4,9 +4,11 @@ import java.util.List;
 public class Player {
   private final String name;
   private int score = 0;
+  private int gameState;
 
-  public Player(String name) {
+  public Player(String name, int gameState) {
     this.name = name;
+    this.gameState = gameState;
   }
 
   public String getName() {
@@ -20,6 +22,14 @@ public class Player {
   public void addPoint() {
     this.score++;
   }
+
+    public void setGameState(int gameState) {
+      this.gameState = gameState;
+    }
+
+    public int getGameState(){
+      return gameState;
+    }
 
 /*  public String getId() {
     return id;

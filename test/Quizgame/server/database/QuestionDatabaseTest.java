@@ -15,4 +15,9 @@ public class QuestionDatabaseTest {
             System.out.println(database.getQuestionsByCategory("Sport").get(i).getQuestion());
         }
     }
+
+    @Test
+    public void getQuestionCategories() {
+        System.out.println(database.getQuestionCategories());
+    }
 }

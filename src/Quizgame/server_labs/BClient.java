@@ -12,8 +12,22 @@ public class BClient {
         try (Socket socket = new Socket("127.0.0.1", 5001);
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         ){
+            String fromUser = "";
+            String fromServer = "";
 
+            fromServer = in.readLine();
+            System.out.println(fromServer);
+
+            while ((fromUser = userInput.readLine()) != null) {
+                out.println(fromUser);
+                System.out.println("From client: " + fromUser);
+
+                // reading from server
+                fromServer = in.readLine();
+                System.out.println(fromServer);
+            }
         }
     }
 }
