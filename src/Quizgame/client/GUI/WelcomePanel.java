@@ -25,7 +25,7 @@ public class WelcomePanel extends JPanel implements ActionListener {
         textField.setFont(new Font("Arial", Font.PLAIN, 16));
         textField.setToolTipText("Enter you name here");
         textField.setMargin(new Insets(5, 10, 5, 10));
-        textField.setMaximumSize(new Dimension(200, 30));
+        textField.setMaximumSize(new Dimension(200, 35));
         return textField;
     }
 
