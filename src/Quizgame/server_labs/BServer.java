@@ -9,14 +9,17 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class BServer {
+public class BServer extends Thread {
+
+    Socket socket;
+    public BServer(Socket socket) {
+        this.socket = socket;
+    }
     ServerProtocol serverProtocol = new ServerProtocol();
-    public BServer(){
-        try (ServerSocket serverSocket = new ServerSocket(5001);
-             Socket socket = serverSocket.accept();
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        ){
+    public void run (){
+        try(PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ){
             out.println("Welcome to the server!");
             String fromClient = "";
 

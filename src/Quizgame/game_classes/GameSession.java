@@ -15,8 +15,8 @@ public class GameSession {
 
   public GameSession(int rounds, String p1, String p2) {
     //this.sessionId = sessionId;
-    this.player1 = new Player(p1);
-    this.player2 = new Player(p2);
+    this.player1 = new Player(p1, 1);
+    this.player2 = new Player(p2, 1);
     this.rounds = rounds;
     this.currentRoundIndex = 1;
   }
