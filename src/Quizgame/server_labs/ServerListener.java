@@ -11,8 +11,9 @@ public class ServerListener {
         try (ServerSocket serverSocket = new ServerSocket(5001)) {
 
             while (true) {
-                Socket socket = serverSocket.accept();
-                BServer bServer = new BServer(socket);
+                SSPlayer p1 = new SSPlayer(serverSocket.accept(), "Bosse");
+                SSPlayer p2 = new SSPlayer(serverSocket.accept(), "Hasse");
+                BServer bServer = new BServer(p1, p2);
                 bServer.start();
             }
         } catch (IOException e) {

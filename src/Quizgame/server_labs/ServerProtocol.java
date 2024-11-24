@@ -15,6 +15,10 @@ public class ServerProtocol {
 
     protected int state = gameStart;
 
+    public ServerProtocol() {
+
+    }
+
     public String output(String clientInput){
         if (player1 != null && player2 != null){
             player1 = new Player(clientInput, gameStart);
