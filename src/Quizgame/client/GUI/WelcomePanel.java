@@ -87,10 +87,10 @@ public class WelcomePanel extends JPanel implements ActionListener {
             errorMessage.setVisible(true);
         } else {
             errorMessage.setVisible(false);
-            parent.showNextPanel();
+            parent.getClient().sendToServer("JOIN_QUEUE", playerName);
+            parent.showNextPanel("Category");
         }
-        GameClient client = new GameClient("localhost", 5000, parent); // Ensure this references the correct GameClient instance
-        client.sendToServer("JOIN_QUEUE", playerName); // Send the selected category message
+         // Send the selected category message
 
     }
 }

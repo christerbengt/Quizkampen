@@ -107,7 +107,7 @@ public class QuestionPanel extends JPanel implements ActionListener {
         // Set a timer to wait before proceeding to the next panel
         Timer timer = new Timer(1000, evt -> {
             // After a delay, transition to the next panel
-            parent.showNextPanel();
+            parent.showNextPanel("score");
             // Reset the background to default (for other uses)
             button.setBackground(null);
         });

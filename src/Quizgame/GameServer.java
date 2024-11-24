@@ -81,7 +81,7 @@ public class GameServer {
     private void startNewGame(String player1Id, String player2Id) {
         GameSession session = gameLogic.createNewGame(player1Id, player2Id);
 
-        // Notify both players that game is starting and who goes first
+        // Notify both players that game is starting and who goes first.
         Message gameStartMsg = new Message("GAME_START", session.getSessionId());
         connectedClients.get(player1Id).sendToClient(gameStartMsg);
         connectedClients.get(player2Id).sendToClient(gameStartMsg);

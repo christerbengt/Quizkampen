@@ -6,6 +6,7 @@ import java.awt.*;
 
 
 public class ScoreboardPanel extends JPanel {
+    private QuizCampenGUI parent;
     private JLabel player1Name;
     private JLabel player2Name;
     private JLabel player1Score;

@@ -1,16 +1,21 @@
 package Quizgame.client.GUI;
 
+import Quizgame.GameClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
+
 
 public class QuizCampenGUI extends JFrame implements ActionListener {
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
+    private GameClient client;
 
-    public QuizCampenGUI() {
+    public QuizCampenGUI(GameClient client) {
+        this.client = client;
         setTitle("Quiz Campen");
         setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -29,16 +34,12 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
         // Create four distinct panels
         // Like constructors, we need to create a method to read, categorys, questions and answers from files
         // These can then be used to create the panels insted of the strings
-        JPanel panel1 = welcomePanel;
-        JPanel panel2 = categoryPanel;
-        JPanel panel3 = questionPanel;
-        JPanel panel4 = scoreboardPanel;
 
-        // Add the panels to the main panel
-        mainPanel.add(panel1, "Welcome Panel");
-        mainPanel.add(panel2, "Category");
-        mainPanel.add(panel3, "Question");
-        mainPanel.add(panel4, "Score");
+      // Add the panels to the main panel
+        mainPanel.add(welcomePanel, "Welcome Panel");
+        mainPanel.add(categoryPanel, "Category");
+        mainPanel.add(questionPanel, "Question");
+        mainPanel.add(scoreboardPanel, "Score");
 
         add(mainPanel);
 
@@ -50,11 +51,28 @@ public class QuizCampenGUI extends JFrame implements ActionListener {
 
     }
 
-    public void showNextPanel() {
-        cardLayout.next(mainPanel); // Show the next panel
+    public void showNextPanel(String panelName) {
+        cardLayout.show(mainPanel, panelName); // Show the next panel
     }
 
+    public void setClient(GameClient client) {
+        this.client = client;
+    }
+
+    public GameClient getClient() {
+        return client;
+    }
+
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(QuizCampenGUI::new);
+        GameClient client = new GameClient("localhost", 5000, null);
+        QuizCampenGUI gui = new QuizCampenGUI(client);
+        client.setGui(gui);
+        if (client.connect()) {
+            SwingUtilities.invokeLater(() -> gui.setVisible(true));
+        } else {
+            System.err.println("Could not connect to server");
+            System.exit(1);
+        }
     }
 }

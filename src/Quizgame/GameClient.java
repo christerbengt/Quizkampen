@@ -15,7 +15,7 @@ public class GameClient {
     private Socket serverConnection;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private final QuizCampenGUI gui;
+    private QuizCampenGUI gui;
     private final String serverAddress;
     private final int serverPort;
     private volatile boolean connected;
@@ -75,55 +75,34 @@ public class GameClient {
         }
     }
 
-    /*private void processServerMessage(Message message) {
-        switch (message.getType()) {
-            case "WELCOME":
-                clientId = message.getContent(); // Store client ID
-                gui.updateStatus("Connected as client: " + clientId);
-                break;
-
-            case "GAME_START":
-                gui.showNextPanel(); // Proceed to the next panel
-                break;
-
-            case "QUESTION":
-                gui.updateQuestion(message.getContent()); // Update the question in the panel
-                break;
-
-            case "ANSWER_RESULT":
-                gui.updateStatus(message.getContent()); // Show feedback about the answer
-                break;
-
-            case "GAME_END":
-                gui.showFinalScores(message.getContent()); // Update scoreboard with final scores
-                break;
-
-            default:
-                System.out.println("Unknown message type: " + message.getType());
-        }
-    }
-
-     */
-
-
-    // Process messages received from server
     private void processServerMessage(Message message) {
         switch (message.getType()) {
             case "WELCOME":
-                // Store client ID assigned by server
-                clientId = message.getContent();
-                //  gui.updateStatus("Connected as client: " + clientId);
+                clientId = message.getContent(); // Store client ID
+                System.out.println("Connected as client: " + clientId);
                 break;
 
-            case "ECHO":
-                // Handle echo message from server
-                //   gui.updateStatus("Server echo: " + message.getContent());
+            case "GAME_START":
+                gui.showNextPanel("Category"); // Proceed to the next panel
                 break;
+
+//            case "QUESTION":
+//                gui.updateQuestionPanel(message.getContent()); // Update the question in the panel
+//                break;
+//
+//            case "ANSWER_RESULT":
+//                gui.updateStatus(message.getContent()); // Show feedback about the answer
+//                break;
+//
+//            case "GAME_END":
+//                gui.showFinalScores(message.getContent()); // Update scoreboard with final scores
+//                break;
 
             default:
                 System.out.println("Unknown message type: " + message.getType());
         }
     }
+
 
     // Sends a message to server
     public void sendToServer(String type, String content) {
@@ -180,8 +159,9 @@ public class GameClient {
                 }
             }
 
-            QuizCampenGUI gui = new QuizCampenGUI();
+            QuizCampenGUI gui = new QuizCampenGUI(null);
             GameClient client = new GameClient(serverAddress, serverPort, gui);
+            gui.setClient(client);
 
             if (client.connect()) {
                 gui.setVisible(true);
@@ -193,5 +173,13 @@ public class GameClient {
             System.err.println("Error initializing client: " + e.getMessage());
             System.exit(1);
         }
+    }
+
+    public void setGui(QuizCampenGUI gui) {
+        this.gui = gui;
+    }
+
+    public QuizCampenGUI getGui() {
+        return gui;
     }
 }
