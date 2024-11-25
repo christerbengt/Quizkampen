@@ -12,17 +12,17 @@ public class SSPlayer {
     Socket socket;
     BufferedReader input;
     PrintWriter output;
+    int state = 0;
 
 
-    public SSPlayer(Socket socket, String name) {
+    public SSPlayer(Socket socket, String name) throws IOException {
         this.socket = socket;
         this.name = name;
         try {
-            input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream(), true);
+            output = new PrintWriter(this.socket.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,5 +54,13 @@ public class SSPlayer {
      */
     public SSPlayer getOpponent() {
         return opponent;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

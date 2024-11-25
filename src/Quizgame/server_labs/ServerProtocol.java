@@ -19,20 +19,16 @@ public class ServerProtocol {
 
     }
 
-    public String output(String clientInput){
-        if (player1 != null && player2 != null){
-            player1 = new Player(clientInput, gameStart);
-            return questionDatabase.getQuestionCategories();
-        } else if (player1 != null){
-            player2 = new Player(clientInput, gameStart);
-        }
-        if (state == gameStart){
-            state = requestTopics;
-            return "Welcome to Quizgame!";
-        } else if (state == requestTopics){
+    public String getTopics(){
+        return questionDatabase.getQuestionCategories();
+    }
 
-            return questionDatabase.getQuestionCategories();
-        }
-        return "Invalid input";
+    public String getQuestion(String topic){
+        return questionDatabase.getQuestionsByCategory(topic).getFirst().getQuestion();
+    }
+
+    public String output(String clientInput){
+        return "xoxo";
+
     }
 }

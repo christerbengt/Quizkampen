@@ -20,14 +20,22 @@ public class BClient {
             fromServer = in.readLine();
             System.out.println(fromServer);
 
-            while ((fromUser = userInput.readLine()) != null) {
+            String input = "";
+            String servierInput = "";
+            while (true){
+                input = userInput.readLine();
+                out.println(input);
+                servierInput = in.readLine();
+                System.out.println(servierInput);
+            }
+/*            while ((fromUser = userInput.readLine()) != null) {
                 out.println(fromUser);
                 System.out.println("From client: " + fromUser);
 
                 // reading from server
                 fromServer = in.readLine();
                 System.out.println(fromServer);
-            }
+            }*/
         }
     }
 }
