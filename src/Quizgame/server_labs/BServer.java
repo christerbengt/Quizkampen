@@ -57,23 +57,28 @@ public class BServer extends Thread {
             }
 
             else if (command.startsWith("GameOver")){
-                if (serverProtocol.isGameOver()){
-                    if (currentPlayer.score > currentPlayer.getOpponent().score){
-                        currentPlayer.send("You are a Winner");
-                        currentPlayer.getOpponent().send("You are a looser");
-                    } else if (currentPlayer.score < currentPlayer.getOpponent().score){
-                        currentPlayer.getOpponent().send("You are a Winner");
-                        currentPlayer.send("You are a looser");
-                    } else {
-                        currentPlayer.send("You are a tie");
-                        currentPlayer.getOpponent().send("You are a tie");
-                    }
-                    break;
-                } else {
-                    serverProtocol.round++;
-                    currentPlayer.send("Topic " + serverProtocol.getQuestionDatabase().getQuestionCategories());
-                }
+                isGameOver();
             }
+        }
+    }
+
+    private void isGameOver(){
+        if (serverProtocol.isGameOver()){
+            if (currentPlayer.score > currentPlayer.getOpponent().score){
+                currentPlayer.send("You are a Winner");
+                currentPlayer.getOpponent().send("You are a looser");
+            } else if (currentPlayer.score < currentPlayer.getOpponent().score){
+                currentPlayer.getOpponent().send("You are a Winner");
+                currentPlayer.send("You are a looser");
+            } else {
+                currentPlayer.send("You are a tie");
+                currentPlayer.getOpponent().send("You are a tie");
+            }
+        } else {
+            currentPlayer.isQuestionAnswered = false;
+            currentPlayer.getOpponent().isQuestionAnswered = false;
+            serverProtocol.round++;
+            currentPlayer.send("Topic " + serverProtocol.getQuestionDatabase().getQuestionCategories());
         }
     }
 
@@ -82,10 +87,10 @@ public class BServer extends Thread {
         currentPlayer.opponent.send("E " + currentPlayer.name + ": " + currentPlayer.score + " " + currentPlayer.getOpponent().name + ": " + currentPlayer.score);
     }
 
+    // todo: Behöver fixas logik här
     private void isRoundDone() {
         currentPlayer.isQuestionAnswered = true;
-        if(currentPlayer.getOpponent().isQuestionAnswered){
-            currentPlayer = currentPlayer.getOpponent();
+        if (currentPlayer.opponent.isQuestionAnswered){
             currentPlayer.send("S");
         } else {
             currentPlayer = currentPlayer.getOpponent();

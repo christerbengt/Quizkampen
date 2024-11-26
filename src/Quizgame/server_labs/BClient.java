@@ -61,14 +61,12 @@ public class BClient {
                 }
 
                 else if (fromServer.startsWith("S")){
-                    System.out.println(fromServer);
-                    out.println("GameOver");
+                    out.println("S");
                 }
 
                 else if (fromServer.startsWith("E")){
-                    out.println(fromServer);
-
-
+                    System.out.println(fromServer);
+                    out.println("GameOver");
                 }
 
                 else if (fromServer.startsWith("Waiting")){
